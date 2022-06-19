@@ -52,3 +52,14 @@ func TestRingBufferPublish(t *testing.T) {
 	ring, _ := NewRingBuffer[int64](1024, NewSequencer(1024))
 	ring.Publish(1)
 }
+
+func TestRingBufferCreateBarrier(t *testing.T) {
+	ring, _ := NewRingBuffer[int64](1024, NewSequencer(1024))
+	ring.CreateBarrier()
+}
+
+func TestRingBufferAddGatingSequence(t *testing.T) {
+	ring, _ := NewRingBuffer[int64](1024, NewSequencer(1024))
+	seq1 := NewSequence()
+	ring.AddGatingSequence(&seq1)
+}
