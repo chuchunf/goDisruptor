@@ -45,6 +45,9 @@ func BenchmarkTickerPlant(b *testing.B) {
 	wg.Wait()
 }
 
+/*
+** performance is worse with pinned CPU .. :( ..
+ */
 func BenchmarkTickerPlantPinCPU(b *testing.B) {
 	if runtime.NumCPU() < 4 {
 		panic("need 4 CPU cores for benchmark !")
