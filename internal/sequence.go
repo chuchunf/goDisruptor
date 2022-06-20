@@ -6,7 +6,7 @@ import (
 
 /*
 ** mallocgc allocates 8 bytes cost around 8ns, compare to 20ns for 64 bytes
-** atomic.StoreInt64 doesn't call mallocgc, it is consisently 5ns
+** atomic.StoreInt64 doesn't call mallocgc, it is consistent 4ns
  */
 type Sequence struct {
 	value int64

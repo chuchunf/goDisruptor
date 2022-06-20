@@ -4,7 +4,10 @@ import (
 	internal "goDisruptor/internal"
 )
 
-type Consumer[E any] func(event E)
+/*
+** use reference so no mallocgc will be called, consumer should not modify the data
+ */
+type Consumer[E any] func(event *E)
 
 type Producer[E any] func(pooled *E, updated E)
 
@@ -43,7 +46,7 @@ func (disruptor Disrutpor[E]) AddConsumer(consumer Consumer[E]) func() {
 		next := seq.Get() + 1
 		next = disruptor.barrier.WaitFor(next)
 		pooled := disruptor.ringbuffer.Get(next)
-		consumer(*pooled)
+		consumer(pooled)
 		seq.Set(next)
 	}
 }

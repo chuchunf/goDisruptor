@@ -23,13 +23,13 @@ func receiveData(pooled *TickData, updated TickData) {
 /*
 ** write the data to sequencial log for recovery
  */
-func writeLog(pooled TickData) {
+func writeLog(pooled *TickData) {
 }
 
 /*
 ** process the data
  */
-func process(pooled TickData) {
+func process(pooled *TickData) {
 }
 
 func TickerPlant() (func(data TickData), func(), func()) {

@@ -32,7 +32,7 @@ func TestAddnewProducer(t *testing.T) {
 
 func TestAddnewConsumer(t *testing.T) {
 	disruptor := NewDisruptor[int64](1024)
-	consumer := disruptor.AddConsumer(func(event int64) {})
+	consumer := disruptor.AddConsumer(func(event *int64) {})
 	if consumer == nil {
 		t.Fatal("unable to add consumer")
 	}
@@ -43,8 +43,8 @@ func TestDisruptor(t *testing.T) {
 	producer := disruptor.AddProducer(func(pooled *int64, updated int64) {
 		*pooled = updated
 	})
-	consumer := disruptor.AddConsumer(func(event int64) {
-		if event != 100 {
+	consumer := disruptor.AddConsumer(func(event *int64) {
+		if *event != 100 {
 			t.Fatal("not able to process next event")
 		}
 	})
@@ -58,8 +58,8 @@ func TestDisruptorConcurrently(t *testing.T) {
 	producer := disruptor.AddProducer(func(pooled *int64, updated int64) {
 		*pooled = updated
 	})
-	consumer := disruptor.AddConsumer(func(event int64) {
-		if event != 100 {
+	consumer := disruptor.AddConsumer(func(event *int64) {
+		if *event != 100 {
 			t.Fatal("not able to process next event")
 		}
 	})
