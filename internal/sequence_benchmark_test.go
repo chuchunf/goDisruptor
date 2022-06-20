@@ -1,27 +1,8 @@
 package pkg
 
 import (
-	"sync/atomic"
 	"testing"
 )
-
-func BenchmarkCompareAndSet(b *testing.B) {
-	seq := NewSequence()
-	now := seq.Get()
-	next := now + 1
-	for i := 0; i < b.N; i++ {
-		seq.CompareAndSet(now, next)
-		now = next
-		next = now + 1
-	}
-}
-
-func BenchmarkSequenceGet2(b *testing.B) {
-	seq := int64(100)
-	for i := 0; i < b.N; i++ {
-		atomic.LoadInt64(&seq)
-	}
-}
 
 func BenchmarkSequenceGet(b *testing.B) {
 	seq := NewSequence()
@@ -34,5 +15,44 @@ func BenchmarkSequenceSet(b *testing.B) {
 	seq := NewSequence()
 	for i := 0; i < b.N; i++ {
 		seq.Set(int64(i))
+	}
+}
+
+func BenchmarkCompareAndSet(b *testing.B) {
+	seq := NewSequence8()
+	now := seq.Get()
+	next := now + 1
+	for i := 0; i < b.N; i++ {
+		seq.CompareAndSet(now, next)
+		now = next
+		next = now + 1
+	}
+}
+
+func BenchmarkSequence8Get(b *testing.B) {
+	seq := NewSequence8()
+	for i := 0; i < b.N; i++ {
+		seq.Get()
+	}
+}
+
+func BenchmarkSequence8Set(b *testing.B) {
+	seq := NewSequence8()
+	for i := 0; i < b.N; i++ {
+		seq.Set(int64(i))
+	}
+}
+
+func BenchmarkGetSeq(b *testing.B) {
+	seq := int64(0)
+	for i := 0; i < b.N; i++ {
+		GetSeq(&seq)
+	}
+}
+
+func BenchmarkSetSeq(b *testing.B) {
+	seq := int64(0)
+	for i := 0; i < b.N; i++ {
+		SetSeq(&seq, int64(i))
 	}
 }
