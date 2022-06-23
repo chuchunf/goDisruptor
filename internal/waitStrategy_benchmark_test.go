@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// stop GC makes this lower ...
 func BenchmarkBusySpin(b *testing.B) {
 	seq := NewSequence()
 	seq.Set(100)

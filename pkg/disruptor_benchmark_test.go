@@ -2,11 +2,14 @@ package pkg
 
 import (
 	internal "goDisruptor/internal"
+	"runtime/debug"
 	"sync"
 	"testing"
 )
 
 func BenchmarkDisruptor(b *testing.B) {
+	debug.SetGCPercent(-1)
+
 	size := int64(1024)
 	ringbuffer, _ := internal.NewRingBuffer[int64](size, internal.NewSequencer(size))
 	barrier := ringbuffer.CreateBarrier()
