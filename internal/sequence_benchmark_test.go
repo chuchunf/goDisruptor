@@ -1,10 +1,21 @@
 package pkg
 
 import (
+	"runtime/debug"
 	"testing"
 )
 
 func BenchmarkSequenceGet(b *testing.B) {
+	seq := NewSequence()
+	for i := 0; i < b.N; i++ {
+		seq.Get()
+	}
+}
+
+// slower without GC
+func BenchmarkSequenceGetWithoutGC(b *testing.B) {
+	debug.SetGCPercent(-1)
+
 	seq := NewSequence()
 	for i := 0; i < b.N; i++ {
 		seq.Get()
