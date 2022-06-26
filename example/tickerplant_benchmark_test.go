@@ -47,6 +47,7 @@ func BenchmarkTickerPlant(b *testing.B) {
 
 /*
 ** performance is worse with pinned CPU .. :( ..
+** from call graphy, this pincpu version should be faster ...
  */
 func BenchmarkTickerPlantPinCPU(b *testing.B) {
 	if runtime.NumCPU() < 4 {
