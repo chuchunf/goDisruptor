@@ -3,7 +3,6 @@
 Another LMAX disruptor port in go 1.8 with generics support.
 
 ## TODO: 
-* why stoppging GC has different effect ?
 * find out why PIN cpu is slow
 * cache memory alignment (cachegrind)
 * false sharing
