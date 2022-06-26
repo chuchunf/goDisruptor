@@ -6,9 +6,6 @@ Another LMAX disruptor port in go 1.8 with generics support.
 * cache memory alignment (cachegrind)
 * false sharing
 * find hot path 
-* publishN example
 * find out why PIN cpu is slow
-* mutiple writer support
-* diamond setup/example
 * readme update
 * proper write up 
