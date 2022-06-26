@@ -12,7 +12,8 @@ func BenchmarkSequenceGet(b *testing.B) {
 	}
 }
 
-// slower without GC
+// slower without GC with vscoder, but faster when triggered directly
+// no significant difference in call graph, likely due to the I/O, lock, Timer, scheduling etc.
 func BenchmarkSequenceGetWithoutGC(b *testing.B) {
 	debug.SetGCPercent(-1)
 
