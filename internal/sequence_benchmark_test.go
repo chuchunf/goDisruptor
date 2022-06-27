@@ -31,6 +31,15 @@ func BenchmarkSequenceSet(b *testing.B) {
 	}
 }
 
+func BenchmarkSequenceSetWithoutGC(b *testing.B) {
+	debug.SetGCPercent(-1)
+
+	seq := NewSequence()
+	for i := 0; i < b.N; i++ {
+		seq.Set(int64(i))
+	}
+}
+
 func BenchmarkCompareAndSet(b *testing.B) {
 	seq := NewSequence8()
 	now := seq.Get()
@@ -99,6 +108,8 @@ func BenchmarkConcurrentGetSet(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetAndSet8(b *testing.B) {
+	debug.SetGCPercent(-1)
+
 	seq := NewSequence8()
 	wg := sync.WaitGroup{}
 	wg.Add(3)
