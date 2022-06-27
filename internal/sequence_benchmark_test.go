@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"runtime/debug"
+	"sync"
 	"testing"
 )
 
@@ -67,4 +68,30 @@ func BenchmarkSetSeq(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		SetSeq(&seq, int64(i))
 	}
+}
+
+func BenchmarkConcurrentGetSet(b *testing.B) {
+	seq := NewSequence()
+	iterations := int64(b.N)
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	add := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Set(i)
+		}
+	}
+
+	get := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Get()
+		}
+	}
+
+	go add()
+	go get()
+	go get()
+	wg.Wait()
 }
