@@ -58,6 +58,15 @@ func BenchmarkSequence8Get(b *testing.B) {
 	}
 }
 
+func BenchmarkSequence8GetWithoutGC(b *testing.B) {
+	debug.SetGCPercent(-1)
+
+	seq := NewSequence8()
+	for i := 0; i < b.N; i++ {
+		seq.Get()
+	}
+}
+
 func BenchmarkSequence8Set(b *testing.B) {
 	seq := NewSequence8()
 	for i := 0; i < b.N; i++ {
