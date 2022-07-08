@@ -2,6 +2,7 @@ package example
 
 import (
 	"runtime"
+	"runtime/debug"
 	"sync"
 	"testing"
 
@@ -9,6 +10,8 @@ import (
 )
 
 func BenchmarkTickerPlant(b *testing.B) {
+	debug.SetGCPercent(-1)
+
 	producer, logger, processer := TickerPlant()
 	iterations := int32(b.N)
 
@@ -50,6 +53,8 @@ func BenchmarkTickerPlant(b *testing.B) {
 ** from call graphy, this pincpu version should be faster ...
  */
 func BenchmarkTickerPlantPinCPU(b *testing.B) {
+	debug.SetGCPercent(-1)
+
 	if runtime.NumCPU() < 4 {
 		panic("need 4 CPU cores for benchmark !")
 	}
