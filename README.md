@@ -35,7 +35,7 @@ Please refer to [example](example)
     - Initial Release
 
 ## Roadmap
-- [ ] support more waiting strategies 
+- [x] support more waiting strategies 
 - [ ] support publish N messages
 - [ ] support consume N messages
 - [ ] support mutiple consumers
