@@ -38,7 +38,6 @@ Please refer to [example](example)
 - [x] support more waiting strategies 
 - [ ] support publish N messages
 - [ ] support consume N messages
-- [ ] support mutiple consumers
 - [ ] support proper DSL
 - [ ] more examples
 
