@@ -88,6 +88,59 @@ func BenchmarkSetSeq(b *testing.B) {
 	}
 }
 
+func BenchmarkConcurrentGetSetRaw(b *testing.B) {
+	debug.SetGCPercent(-1)
+	seq := int64(0)
+	iterations := int64(b.N)
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	add := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			SetSeq(&seq, i)
+		}
+	}
+
+	get := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			GetSeq(&seq)
+		}
+	}
+
+	go add()
+	go get()
+	go get()
+	wg.Wait()
+}
+
+func BenchmarkConcurrentGetSetWithGC(b *testing.B) {
+	seq := NewSequence()
+	iterations := int64(b.N)
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	add := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Set(i)
+		}
+	}
+
+	get := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Get()
+		}
+	}
+
+	go add()
+	go get()
+	go get()
+	wg.Wait()
+}
+
 func BenchmarkConcurrentGetSet(b *testing.B) {
 	debug.SetGCPercent(-1)
 
