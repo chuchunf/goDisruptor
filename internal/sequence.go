@@ -5,9 +5,13 @@ import (
 )
 
 /*
-** mallocgc allocates 8 bytes cost around 8ns, compare to 20ns for 64 bytes
-** atomic.StoreInt64 doesn't call mallocgc, it is consistent 4ns
+** Implementation of Sequence, which is the fundemtal data strcture for the entire package.
+**
+** Sequence is just a thread-safe counter, which for the consumer and producer to determine, get then process
+** a slot from the ring buffer.
  */
+
+// Sequence as a structure with a single int64 as counter
 type Sequence struct {
 	value int64
 }
@@ -28,9 +32,7 @@ func (seq *Sequence) CompareAndSet(original int64, value int64) bool {
 	return atomic.CompareAndSwapInt64(&seq.value, original, value)
 }
 
-/*
-** seems go lang allocate struct in heap, [8]int64 cost around 20ns
- */
+// Sequence as a structure with a paded int64 array as
 type Sequence8 struct {
 	value [8]int64
 }
@@ -51,7 +53,7 @@ func (seq *Sequence8) CompareAndSet(original int64, value int64) bool {
 	return atomic.CompareAndSwapInt64(&seq.value[0], original, value)
 }
 
-// implementation using int64 directly, no allocation to heap, 0.2 ns only
+// Use an int64 directly
 func GetSeq(seq *int64) int64 {
 	return atomic.LoadInt64(seq)
 }
