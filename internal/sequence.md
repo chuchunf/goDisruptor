@@ -11,7 +11,10 @@ Following Sequences are tested
 
 All performance testing are done in Windows 10 with i5-11400F @ 2.60GHz in console
 ```
+#bechmark
 go.exe test -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
+#profile
+go.exe test -cpuprofile cpu.prof -memprofile mem.prof -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
 ```
 
 ### Performance results 
