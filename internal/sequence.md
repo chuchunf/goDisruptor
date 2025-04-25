@@ -10,11 +10,17 @@ Following Sequences are tested
 * directly with int64
 
 All performance testing are done in Windows 10 with i5-11400F @ 2.60GHz in console
-```
+```powershell
 #bechmark
-go.exe test -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
+go test -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
 #profile
-go.exe test -cpuprofile cpu.prof -memprofile mem.prof -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
+go test -cpuprofile cpu.prof -memprofile mem.prof -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
+#get top function calls
+go tool pprof cpu.prof => top
+# generate call graph
+go tool pprof cpu.prof => png
+# get top memory allocation
+go tool pprof mem.prof => top
 ```
 
 ### Performance results 
