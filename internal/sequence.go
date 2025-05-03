@@ -7,8 +7,8 @@ import (
 /*
 ** Implementation of Sequence, which is the fundemtal data strcture for the entire package.
 **
-** Sequence is just a thread-safe counter, which for the consumer and producer to determine, get then process
-** a slot from the ring buffer.
+** Sequence is just a thread-safe counter, which for the consumer and producer to coordinate by getting the next number
+** then process to the next slot from the ring buffer.
  */
 
 // Sequence as a structure with a single int64 as counter
@@ -32,7 +32,7 @@ func (seq *Sequence) CompareAndSet(original int64, value int64) bool {
 	return atomic.CompareAndSwapInt64(&seq.value, original, value)
 }
 
-// Sequence as a structure with a paded int64 array as
+// Sequence as a structure with a paded int64 array to avoid false sharing
 type Sequence8 struct {
 	value [8]int64
 }

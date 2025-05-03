@@ -1,7 +1,7 @@
 ## Sequence
 Sequence is the fundemtal data strcture for the entire package.
 
-In short, sequence is just a thread-safe counter, which for the consumer and producer to determine, get then process
+In short, sequence is just a thread-safe counter, which for the consumer and producer to wait, get then process
 a slot from the ring buffer. Refer to Sequencer for more details.
 
 Following Sequences are tested
