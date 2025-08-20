@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	internal "goDisruptor/internal"
+	. "goDisruptor/internal"
 )
 
 /*
@@ -12,13 +12,13 @@ type Consumer[E any] func(event *E)
 type Producer[E any] func(pooled *E, updated E)
 
 type Disrutpor[E any] struct {
-	ringbuffer *internal.RingBuffer[E]
+	ringbuffer *RingBuffer[E]
 	consumers  []Consumer[E]
-	barrier    internal.SequenceBarrier
+	barrier    SequenceBarrier
 }
 
 func NewDisruptor[E any](size int64) *Disrutpor[E] {
-	ring, err := internal.NewRingBuffer[E](size, internal.NewSequencer(size))
+	ring, err := NewRingBuffer[E](size, NewSequencer(size))
 	if err != nil {
 		panic(err)
 	}
@@ -39,7 +39,7 @@ func (disruptor Disrutpor[E]) AddProducer(producer Producer[E]) func(event E) {
 }
 
 func (disruptor Disrutpor[E]) AddConsumer(consumer Consumer[E]) func() {
-	seq := internal.NewSequence()
+	seq := NewSequence()
 	disruptor.ringbuffer.AddGatingSequence(&seq)
 	disruptor.consumers = append(disruptor.consumers, consumer)
 	return func() {

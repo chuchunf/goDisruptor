@@ -17,3 +17,5 @@
 *.prof
 
 .idea/
+
+pkg/mod/
