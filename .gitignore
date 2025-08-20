@@ -15,3 +15,5 @@
 # vendor/
 *.png
 *.prof
+
+.idea/
