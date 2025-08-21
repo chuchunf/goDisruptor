@@ -5,7 +5,7 @@ import (
 )
 
 /*
-** Implementation of Sequence, which is the fundemtal data strcture for the entire package.
+** Implementation of Sequence, which is the fundamental data structure for the entire package.
 **
 ** Sequence is just a thread-safe counter, which for the consumer and producer to coordinate by getting the next number
 ** then process to the next slot from the ring buffer.
