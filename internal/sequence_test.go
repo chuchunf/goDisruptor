@@ -8,11 +8,11 @@ import (
 func TestCreate(t *testing.T) {
 	seq := NewSequence()
 	if seq.Get() != 0 {
-		t.Fatal("seq not initilized !")
+		t.Fatal("seq not initialized !")
 	}
 }
 
-func TestSetandGet(t *testing.T) {
+func TestSetAndGet(t *testing.T) {
 	seq := NewSequence()
 	seq.Set(10)
 	if seq.Get() != 10 {
@@ -54,8 +54,8 @@ func TestCompareAndSet(t *testing.T) {
 	if fail == true {
 		t.Fatal("compare and set failure case fail !")
 	}
-	succ := seq.CompareAndSet(10, 20)
-	if succ == false {
+	success := seq.CompareAndSet(10, 20)
+	if success == false {
 		t.Fatal("compare and set success case fail !")
 	}
 	result := seq.Get()
@@ -94,7 +94,7 @@ func TestConcurrentGetAndSet8(t *testing.T) {
 func TestGetSeq(t *testing.T) {
 	seq := int64(0)
 	if GetSeq(&seq) != 0 {
-		t.Fatal("seq not initilized !")
+		t.Fatal("seq not initialized !")
 	}
 }
 
