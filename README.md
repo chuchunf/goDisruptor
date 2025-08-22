@@ -30,16 +30,12 @@ running all performance testing benchmarks
 ### Usage
 Please refer to [example](example) 
 
-## Versioning
-- 0.1
-    - Initial Release
-
-## Roadmap
-- [x] support more waiting strategies 
-- [ ] support publish N messages
-- [ ] support consume N messages
-- [ ] support proper DSL
-- [ ] more examples
+## Plan
+- [ ] Sequence 
+- [ ] Waiting Strategy
+- [ ] Sequence Barrier
+- [ ] Sequencer
+- [ ] RingBuffer
 
 ## License
 Distributed under the MIT License. See [LICENSE.txt](LICENSE.txt) for more information.
