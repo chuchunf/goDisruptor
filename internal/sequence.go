@@ -32,7 +32,7 @@ func (seq *Sequence) CompareAndSet(original int64, value int64) bool {
 	return atomic.CompareAndSwapInt64(&seq.value, original, value)
 }
 
-// Sequence as a structure with a paded int64 array to avoid false sharing
+// Sequence8 Sequence as a structure with a padded int64 array to avoid false sharing
 type Sequence8 struct {
 	value [8]int64
 }
@@ -41,7 +41,7 @@ func NewSequence8() Sequence8 {
 	return Sequence8{value: [8]int64{0, 0, 0, 0, 0, 0, 0, 0}}
 }
 
-func (seq Sequence8) Get() int64 {
+func (seq *Sequence8) Get() int64 {
 	return atomic.LoadInt64(&seq.value[0])
 }
 
@@ -53,7 +53,7 @@ func (seq *Sequence8) CompareAndSet(original int64, value int64) bool {
 	return atomic.CompareAndSwapInt64(&seq.value[0], original, value)
 }
 
-// Use an int64 directly
+// GetSeq uses an int64 directly
 func GetSeq(seq *int64) int64 {
 	return atomic.LoadInt64(seq)
 }
