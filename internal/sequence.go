@@ -20,7 +20,7 @@ func NewSequence() Sequence {
 	return Sequence{value: 0}
 }
 
-func (seq Sequence) Get() int64 {
+func (seq *Sequence) Get() int64 {
 	return atomic.LoadInt64(&seq.value)
 }
 
