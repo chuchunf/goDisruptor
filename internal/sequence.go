@@ -7,8 +7,8 @@ import (
 /*
 ** Implementation of Sequence, which is the fundamental data structure for the entire package.
 **
-** Sequence is just a thread-safe counter, which for the consumer and producer to coordinate by getting the next number
-** then process to the next slot from the ring buffer.
+** Sequence is just a thread-safe counter. The consumers and producers coordinate with each other by
+** getting the next number then process to the next slot from the ring buffer.
  */
 
 // Sequence as a structure with a single int64 as counter

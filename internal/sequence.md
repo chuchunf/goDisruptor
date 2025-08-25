@@ -2,23 +2,24 @@
 Sequence is the fundamental data structure for the entire package.
 
 In short, sequence is just a thread-safe counter, points to a slot in the ring buffer. 
-The consumer and producer uses a wait strategy to wait for the number. 
-Once get the slot, then the consumer or producer can continue its process. 
+The consumer and producer uses a wait strategy to wait for the number to be available in the sequence
+Once get the number/slot, the consumer or producer can continue its process. 
 
-Following Sequences are tested
-* struct with int64
-* struct with [8]int65
+Following Sequences implementation are tested
+* a struct with int64
+* a struct with [8]int64 (padding for 64 bytes to avoid false sharing)
 * directly with int64
 
-All performance testing are done in Windows 10 with i5-11400F @ 2.60GHz in console
-```powershell
-#bechmark
+All performance testing are conducted in Windows 11 with Ryzen 5 7600 @ 3.8GHz in console
+
+```bash
+# benchmark 
 go test -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
 
-#profile
+# profile
 go test -cpuprofile cpu.prof -memprofile mem.prof -benchmem -run=^$ -tags -race -bench ^BenchmarkSequenceGet$ goDisruptor/internal
 
-#get top function calls
+# get top function calls
 go tool pprof cpu.prof => top
 
 # generate call graph
@@ -29,18 +30,17 @@ go tool pprof mem.prof => top
 ```
 
 ### Performance results 
-|                 | Get without GC | Get with GC  | Set without GC | Set with GC | Concurrent Get and Set without GC |
-|-----------------|----------------|--------------|----------------|-------------|-----------------------------------|
-| struct int64    | 10.18 ns/op    | 11.42 ns/op  | 4.624 ns/op    | 4.615 ns/op | 21.70 ns/op                       |
-| struct [8]int64 | 23.10 ns/op    | 36.69 ns/op  | 4.714 ns/op    | 5.033 ns/op | 49.09 ns/op                       |
-| int64           | 0.2708 ns/op   | 0.2416 ns/op | 4.936 ns/op    | 5.150 ns/op | 5.291 ns/op                       |
+|                 | Get without GC | Get with GC  | Set without GC | Set with GC   | 
+|-----------------|----------------|--------------|---------------|---------------|
+| struct int64    | 0.2182 ns/op   | 0.2119 ns/op | 1.610 ns/op   | 1.688 ns/op   | 
+| struct [8]int64 | 0.2142 ns/op   | 0.2194 ns/op | 1.586 ns/op   | 1.607 ns/op   |
+| int64           | 0.2119 ns/op   | 0.4066 ns/op | 1.612 ns/op   | 1.611 ns/op   |
 
-
-### Get vs. Set
 
 ### Impact of GC
-// slower without GC with vscoder, but faster when triggered directly
-// no significant difference in call graph, likely due to the I/O, lock, Timer, scheduling etc.
+with GC turns off, it
+
+### Get vs. Set
 
 ### Impact of malloc
 ** malloc allocates 8 bytes cost around 8ns, compare to 20ns for 64 bytes
@@ -55,4 +55,4 @@ get on direct int64 is much faster while set on direct int64 has no significant 
 
 
 ### Impact of cache line / false sharing 
-
+how to confirm this false sharing ?
