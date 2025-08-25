@@ -38,7 +38,17 @@ go tool pprof mem.prof => top
 
 
 ### Impact of GC
-with GC turns off, it
+For direct access of int64, the impact of GC is significant, compare the function calls for gc and no-gc
+
+##### top functions for non-gc 
+flat  flat%   sum%        cum   cum%
+230ms 95.83% 95.83%      230ms 95.83%  goDisruptor/internal.BenchmarkGetSeqWithoutGC
+10ms  4.17%   100%       10ms  4.17%  runtime.cgocall
+
+##### top functions for gc
+flat  flat%   sum%        cum   cum%
+450ms 97.83% 97.83%      450ms 97.83%  goDisruptor/internal.BenchmarkGetSeq
+10ms  2.17%   100%       10ms  2.17%  runtime.cgocall
 
 ### Get vs. Set
 
@@ -56,3 +66,4 @@ get on direct int64 is much faster while set on direct int64 has no significant 
 
 ### Impact of cache line / false sharing 
 how to confirm this false sharing ?
+write a testing that have 2 sequences next to each other and use to get/set
