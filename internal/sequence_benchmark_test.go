@@ -1,12 +1,15 @@
 package pkg
 
 import (
+	"runtime"
 	"runtime/debug"
 	"sync"
 	"testing"
 )
 
 func BenchmarkSequenceGet(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	for i := 0; i < b.N; i++ {
 		seq.Get()
@@ -14,6 +17,7 @@ func BenchmarkSequenceGet(b *testing.B) {
 }
 
 func BenchmarkSequenceGetWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence()
@@ -23,6 +27,8 @@ func BenchmarkSequenceGetWithoutGC(b *testing.B) {
 }
 
 func BenchmarkSequenceSet(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	for i := 0; i < b.N; i++ {
 		seq.Set(int64(i))
@@ -30,6 +36,7 @@ func BenchmarkSequenceSet(b *testing.B) {
 }
 
 func BenchmarkSequenceSetWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence()
@@ -39,6 +46,8 @@ func BenchmarkSequenceSetWithoutGC(b *testing.B) {
 }
 
 func BenchmarkCompareAndSet(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence8()
 	now := seq.Get()
 	next := now + 1
@@ -50,6 +59,8 @@ func BenchmarkCompareAndSet(b *testing.B) {
 }
 
 func BenchmarkSequence8Get(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence8()
 	for i := 0; i < b.N; i++ {
 		seq.Get()
@@ -57,6 +68,7 @@ func BenchmarkSequence8Get(b *testing.B) {
 }
 
 func BenchmarkSequence8GetWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence8()
@@ -66,6 +78,8 @@ func BenchmarkSequence8GetWithoutGC(b *testing.B) {
 }
 
 func BenchmarkSequence8Set(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence8()
 	for i := 0; i < b.N; i++ {
 		seq.Set(int64(i))
@@ -73,6 +87,7 @@ func BenchmarkSequence8Set(b *testing.B) {
 }
 
 func BenchmarkSequence8SetWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence8()
@@ -82,6 +97,8 @@ func BenchmarkSequence8SetWithoutGC(b *testing.B) {
 }
 
 func BenchmarkGetSeq(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := int64(0)
 	for i := 0; i < b.N; i++ {
 		GetSeq(&seq)
@@ -89,6 +106,7 @@ func BenchmarkGetSeq(b *testing.B) {
 }
 
 func BenchmarkGetSeqWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := int64(0)
@@ -98,6 +116,8 @@ func BenchmarkGetSeqWithoutGC(b *testing.B) {
 }
 
 func BenchmarkSetSeq(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := int64(0)
 	for i := 0; i < b.N; i++ {
 		SetSeq(&seq, int64(i))
@@ -105,6 +125,7 @@ func BenchmarkSetSeq(b *testing.B) {
 }
 
 func BenchmarkSetSeqWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := int64(0)
@@ -114,6 +135,7 @@ func BenchmarkSetSeqWithoutGC(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetSetRaw(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 	seq := int64(0)
 	iterations := int64(b.N)
@@ -141,6 +163,8 @@ func BenchmarkConcurrentGetSetRaw(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetSetWithGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	iterations := int64(b.N)
 	wg := sync.WaitGroup{}
@@ -167,6 +191,7 @@ func BenchmarkConcurrentGetSetWithGC(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetSet(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence()
@@ -195,6 +220,7 @@ func BenchmarkConcurrentGetSet(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetAndSet8(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence8()

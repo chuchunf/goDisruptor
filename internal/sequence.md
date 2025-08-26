@@ -34,21 +34,23 @@ go tool pprof mem.prof => top
 |-----------------|----------------|--------------|---------------|---------------|
 | struct int64    | 0.2182 ns/op   | 0.2119 ns/op | 1.610 ns/op   | 1.688 ns/op   | 
 | struct [8]int64 | 0.2142 ns/op   | 0.2194 ns/op | 1.586 ns/op   | 1.607 ns/op   |
-| int64           | 0.2119 ns/op   | 0.4066 ns/op | 1.612 ns/op   | 1.611 ns/op   |
+| int64           | 0.2119 ns/op   | 0.2121 ns/op | 1.612 ns/op   | 1.611 ns/op   |
 
+
+### Impact of sampling rate
+Given we're testing for nano second changes and the function used to run less than 1 second,
+the default sample rate of 100 is too small. 
+For all the benchmarking, we will use sample rate at 10000
+```go
+ runtime.SetCPUProfileRate(10000)
+```
 
 ### Impact of GC
-For direct access of int64, the impact of GC is significant, compare the function calls for gc and no-gc
+From the benchmark above, the impact of GC in all the cases are negligible, probably due to the fact that 
+the memory footprint and change are relatively small, there are not much GC activities anyway.
 
-##### top functions for non-gc 
-flat  flat%   sum%        cum   cum%
-230ms 95.83% 95.83%      230ms 95.83%  goDisruptor/internal.BenchmarkGetSeqWithoutGC
-10ms  4.17%   100%       10ms  4.17%  runtime.cgocall
-
-##### top functions for gc
-flat  flat%   sum%        cum   cum%
-450ms 97.83% 97.83%      450ms 97.83%  goDisruptor/internal.BenchmarkGetSeq
-10ms  2.17%   100%       10ms  2.17%  runtime.cgocall
+This can be confirmed by the cpu.prof that the call graph are almost identical.
+Although it needs to be noted that from the mem.prof, the tests without GC allocate a larger memory initially.
 
 ### Get vs. Set
 
@@ -67,3 +69,6 @@ get on direct int64 is much faster while set on direct int64 has no significant 
 ### Impact of cache line / false sharing 
 how to confirm this false sharing ?
 write a testing that have 2 sequences next to each other and use to get/set
+
+
+TODO: use testprofile instead call the function SetCPUProfileRate ?
