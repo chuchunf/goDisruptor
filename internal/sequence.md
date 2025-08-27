@@ -29,22 +29,25 @@ go tool pprof cpu.prof => png
 go tool pprof mem.prof => top
 ```
 
-### Performance results 
+
+## Benchmark results 
 |                 | Get without GC | Get with GC  | Set without GC | Set with GC   | 
 |-----------------|----------------|--------------|---------------|---------------|
 | struct int64    | 0.2182 ns/op   | 0.2119 ns/op | 1.610 ns/op   | 1.688 ns/op   | 
 | struct [8]int64 | 0.2142 ns/op   | 0.2194 ns/op | 1.586 ns/op   | 1.607 ns/op   |
 | int64           | 0.2119 ns/op   | 0.2121 ns/op | 1.612 ns/op   | 1.611 ns/op   |
-
+$~$
 
 ### Impact of sampling rate
 Given we're testing for nano second changes and the function used to run less than 1 second,
 the default sample rate of 100 is too small. 
 For all the benchmarking, we will use sample rate at 10000
 ```go
- runtime.SetCPUProfileRate(10000)
+    runtime.SetCPUProfileRate(10000)
 ```
 
+$~$
+  
 ### Impact of GC
 From the benchmark above, the impact of GC in all the cases are negligible, probably due to the fact that 
 the memory footprint and change are relatively small, there are not much GC activities anyway.
@@ -52,23 +55,20 @@ the memory footprint and change are relatively small, there are not much GC acti
 This can be confirmed by the cpu.prof that the call graph are almost identical.
 Although it needs to be noted that from the mem.prof, the tests without GC allocate a larger memory initially.
 
-### Get vs. Set
+$~$
 
 ### Impact of malloc
-** malloc allocates 8 bytes cost around 8ns, compare to 20ns for 64 bytes
-** atomic.StoreInt64 doesn't call malloc, it is consistent 4ns
-** implementation using int64 directly, no allocation to heap, 0.2 ns only
+Impact on malloc is also negligible, probably due to the memory allocation is quite small.
 
+$~$
+ 
 ### Impact of the struct
-/*
-** seems go lang allocate struct in heap, [8]int64 cost around 20ns
- */
-get on direct int64 is much faster while set on direct int64 has no significant difference
+The impact on additional struct is negligible too, the call graphy and memory profiling are almost identical.
+Golang compiler has optimization on this already.
 
+$~$ 
 
 ### Impact of cache line / false sharing 
 how to confirm this false sharing ?
 write a testing that have 2 sequences next to each other and use to get/set
 
-
-TODO: use testprofile instead call the function SetCPUProfileRate ?
