@@ -291,3 +291,49 @@ func BenchmarkFalseSharing(b *testing.B) {
 	go get2()
 	wg.Wait()
 }
+
+func BenchmarkNoFalseSharing(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+	debug.SetGCPercent(-1)
+
+	seq1 := NewSequence8()
+	seq2 := NewSequence8()
+
+	wg := sync.WaitGroup{}
+	wg.Add(4)
+	iterations := int64(b.N)
+
+	add1 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq1.Set(i)
+		}
+	}
+
+	add2 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq2.Set(i)
+		}
+	}
+
+	get1 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq1.Get()
+		}
+	}
+
+	get2 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq2.Get()
+		}
+	}
+
+	go add1()
+	go add2()
+	go get1()
+	go get2()
+	wg.Wait()
+}
