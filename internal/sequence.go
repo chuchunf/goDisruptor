@@ -61,3 +61,26 @@ func GetSeq(seq *int64) int64 {
 func SetSeq(seq *int64, value int64) {
 	atomic.StoreInt64(seq, value)
 }
+
+// SequenceFalseSharing test specifically for false sharing
+type SequenceFalseSharing struct {
+	value1 int64
+	value2 int64
+	dummy  [6]int64
+}
+
+func NewSequenceFalseSharing() SequenceFalseSharing {
+	return SequenceFalseSharing{
+		value1: 0,
+		value2: 0,
+		dummy:  [6]int64{0, 0, 0, 0, 0, 0},
+	}
+}
+
+func (seq *SequenceFalseSharing) Get1() int64 {
+	return atomic.LoadInt64(&seq.value1)
+}
+
+func (seq *SequenceFalseSharing) Set2(value int64) {
+	atomic.StoreInt64(&seq.value2, value)
+}
