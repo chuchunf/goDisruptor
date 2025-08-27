@@ -1,1 +1,5 @@
-todo: consolidate all performance related result, analysis and conclusion in this file 
+sequence [x]
+brief intro
+highlevel design of component
+component in sequence
+
