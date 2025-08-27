@@ -30,13 +30,25 @@ go tool pprof mem.prof => top
 ```
 
 
-## Benchmark results 
+## Benchmark results  
+### for Get and Set
 |                 | Get without GC | Get with GC  | Set without GC | Set with GC   | 
 |-----------------|----------------|--------------|---------------|---------------|
 | struct int64    | 0.2182 ns/op   | 0.2119 ns/op | 1.610 ns/op   | 1.688 ns/op   | 
 | struct [8]int64 | 0.2142 ns/op   | 0.2194 ns/op | 1.586 ns/op   | 1.607 ns/op   |
 | int64           | 0.2119 ns/op   | 0.2121 ns/op | 1.612 ns/op   | 1.611 ns/op   |
+
+### for concurrent Get and Set
+|| Get and Set |
+|--|-------------|
+|struct int64| 1.944 ns/op |
+|struct [8]int65| 1.958 ns/op |
+|int64| 1.948 ns/op |
+|False sharing int64| 14.91 ns/op |
 $~$
+
+
+
 
 ### Impact of sampling rate
 Given we're testing for nano second changes and the function used to run less than 1 second,

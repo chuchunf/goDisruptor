@@ -135,7 +135,6 @@ func BenchmarkSetSeqWithoutGC(b *testing.B) {
 }
 
 func BenchmarkConcurrentGetSetRaw(b *testing.B) {
-	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 	seq := int64(0)
 	iterations := int64(b.N)
@@ -245,5 +244,50 @@ func BenchmarkConcurrentGetAndSet8(b *testing.B) {
 	go add()
 	go get()
 	go get()
+	wg.Wait()
+}
+
+func BenchmarkFalseSharing(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+	debug.SetGCPercent(-1)
+
+	seq := NewSequenceFalseSharing()
+
+	wg := sync.WaitGroup{}
+	wg.Add(4)
+	iterations := int64(b.N)
+
+	add1 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Set1(i)
+		}
+	}
+
+	add2 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Set2(i)
+		}
+	}
+
+	get1 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Get1()
+		}
+	}
+
+	get2 := func() {
+		defer wg.Done()
+		for i := int64(0); i < iterations; i++ {
+			seq.Get2()
+		}
+	}
+
+	go add1()
+	go add2()
+	go get1()
+	go get2()
 	wg.Wait()
 }

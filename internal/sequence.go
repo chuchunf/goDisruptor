@@ -81,6 +81,14 @@ func (seq *SequenceFalseSharing) Get1() int64 {
 	return atomic.LoadInt64(&seq.value1)
 }
 
+func (seq *SequenceFalseSharing) Get2() int64 {
+	return atomic.LoadInt64(&seq.value2)
+}
+
+func (seq *SequenceFalseSharing) Set1(value int64) {
+	atomic.StoreInt64(&seq.value1, value)
+}
+
 func (seq *SequenceFalseSharing) Set2(value int64) {
 	atomic.StoreInt64(&seq.value2, value)
 }
