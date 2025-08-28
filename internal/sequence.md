@@ -29,6 +29,7 @@ go tool pprof cpu.prof => png
 go tool pprof mem.prof => top
 ```
 
+$~$
 
 ## Benchmark results  
 ### for Get and Set
@@ -39,13 +40,13 @@ go tool pprof mem.prof => top
 |int64          | 0.2119 ns/op   | 0.2121 ns/op | 1.612 ns/op   | 1.611 ns/op   |
 
 ### for concurrent Get and Set
-|Implementation                   | Get and Set  |
-|---------------------------------|--------------|
-|struct int64                    | 1.944 ns/op  |
-|struct [8]int64                 | 1.958 ns/op  |
-|int64                           | 1.948 ns/op  |
-|False sharing int64             | **14.91 ns/op**  |
-|No False Sharing struct [8]int64 | 1.931 ns/op  |
+|Implementation                   | Get and Set  | Test code                                                        |
+|---------------------------------|--------------|------------------------------------------------------------------|
+|struct int64                    | 1.944 ns/op  | [BenchmarkConcurrentGetSetRaw](sequence_benchmark_test.go#L137)  |
+|struct [8]int64                 | 1.958 ns/op  | [BenchmarkConcurrentGetAndSet8](sequence_benchmark_test.go#L221) |
+|int64                           | 1.948 ns/op  | [BenchmarkConcurrentGetSet](sequence_benchmark_test.go#L192)     |
+|False sharing int64             | **14.91 ns/op**  | [BenchmarkFalseSharing](sequence_benchmark_test.go#L250)     |
+|No False Sharing struct [8]int64 | 1.931 ns/op  | [BenchmarkNoFalseSharing](sequence_benchmark_test.go#L295)       |
 
 $~$
 
