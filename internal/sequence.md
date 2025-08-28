@@ -85,7 +85,3 @@ $~$
 ### Impact of the struct
 The impact on additional struct is negligible too, the call graphy and memory profiling are almost identical.
 Golang compiler has optimization on this already.
-
-$~$ 
-
-TODO: add pin to CPU test ?
