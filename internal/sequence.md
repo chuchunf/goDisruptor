@@ -50,6 +50,7 @@ $~$
 
 $~$
 
+## Analysis 
 ### Impact of sampling rate
 Given we're testing for nano second changes and the function used to run less than 1 second,
 the default sample rate of 100 is too small. 
