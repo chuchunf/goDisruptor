@@ -19,9 +19,9 @@ type SingleProducerSequencer struct {
 	gatingSequence []*Sequence // reading seqs
 }
 
-func NewSequencer(buffersize int64) Sequencer {
+func NewSequencer(bufferSize int64) Sequencer {
 	return &SingleProducerSequencer{
-		size:   buffersize,
+		size:   bufferSize,
 		cursor: NewSequence(),
 	}
 }
@@ -41,7 +41,7 @@ func (seqcer *SingleProducerSequencer) createBarrier() SequenceBarrier {
 }
 
 /*
-** claim 1/n sequence for writting
+** claim 1/n sequence for writing
  */
 func (seqcer *SingleProducerSequencer) next() (int64, error) {
 	return seqcer.nextN(1)
@@ -56,21 +56,21 @@ func (seqcer *SingleProducerSequencer) nextN(n int64) (int64, error) {
 	next := written + n
 	wrap := next - seqcer.size
 
-	for min := getMinSeq(seqcer.gatingSequence); wrap >= min; {
-		min = getMinSeq(seqcer.gatingSequence)
+	for minValue := getMinSeq(seqcer.gatingSequence); wrap >= minValue; {
+		minValue = getMinSeq(seqcer.gatingSequence)
 	}
 
 	return next, nil
 }
 
 func getMinSeq(seqs []*Sequence) int64 {
-	var min int64
+	var minValue int64
 	for i, v := range seqs {
-		if i == 0 || v.Get() < min {
-			min = v.Get()
+		if i == 0 || v.Get() < minValue {
+			minValue = v.Get()
 		}
 	}
-	return min
+	return minValue
 }
 
 /*
