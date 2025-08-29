@@ -13,14 +13,14 @@ func TestCreateRingBuffer(t *testing.T) {
 
 func TestCreateRingBufferInvalidSize(t *testing.T) {
 	_, err := NewRingBuffer[int64](-10, NewSequencer(1024))
-	if err != errorBufferSizeLessthan1 {
+	if err != errorBufferSizeLessThan1 {
 		t.Fatal("cannot create size less than 1 !")
 	}
 }
 
 func TestCreateRingBufferNotPowerOf2(t *testing.T) {
 	_, err := NewRingBuffer[int64](99, NewSequencer(99))
-	if err != errorBufferSizePowerof2 {
+	if err != errorBufferSizePowerOf2 {
 		t.Fatal("buffer size must be power of 2!")
 	}
 }

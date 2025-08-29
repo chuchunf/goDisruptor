@@ -14,14 +14,14 @@ type TickData struct {
 }
 
 /*
-** receive data and update accoridngly
+** receive data and update accordingly
  */
 func receiveData(pooled *TickData, updated TickData) {
 	pooled.seq = updated.seq
 }
 
 /*
-** write the data to sequencial log for recovery
+** write the data to sequential log for recovery
  */
 func writeLog(pooled *TickData) {
 }
@@ -33,9 +33,9 @@ func process(pooled *TickData) {
 }
 
 func TickerPlant() (func(data TickData), func(), func()) {
-	disruptor := disruptor.NewDisruptor[TickData](1024)
-	producer := disruptor.AddProducer(receiveData)
-	logger := disruptor.AddConsumer(writeLog)
-	processor := disruptor.AddConsumer(process)
+	instance := disruptor.NewDisruptor[TickData](1024)
+	producer := instance.AddProducer(receiveData)
+	logger := instance.AddConsumer(writeLog)
+	processor := instance.AddConsumer(process)
 	return producer, logger, processor
 }

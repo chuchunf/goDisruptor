@@ -13,10 +13,10 @@ type RingBuffer[E any] struct {
 
 func NewRingBuffer[E any](size int64, sequencer Sequencer) (*RingBuffer[E], error) {
 	if size < 1 {
-		return nil, errorBufferSizeLessthan1
+		return nil, errorBufferSizeLessThan1
 	}
 	if size&(size-1) != 0 {
-		return nil, errorBufferSizePowerof2
+		return nil, errorBufferSizePowerOf2
 	}
 
 	return &RingBuffer[E]{
@@ -40,16 +40,19 @@ func (ring *RingBuffer[E]) Next() int64 {
 	return next
 }
 
-// TODO: performance tesitng for remainder operation with mask
+// TODO: performance testng for remainder operation with mask
 func (ring *RingBuffer[E]) Get(index int64) *E {
 	return &ring.entries[index&ring.indexMask]
 }
 
 func (ring *RingBuffer[E]) Publish(index int64) {
-	ring.sequencer.publish(index)
+	err := ring.sequencer.publish(index)
+	if err != nil {
+		return
+	}
 }
 
 var (
-	errorBufferSizeLessthan1 = errors.New("buffer size must be at least 1")
-	errorBufferSizePowerof2  = errors.New("buffer size must be power of 2")
+	errorBufferSizeLessThan1 = errors.New("buffer size must be at least 1")
+	errorBufferSizePowerOf2  = errors.New("buffer size must be power of 2")
 )

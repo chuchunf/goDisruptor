@@ -4,9 +4,6 @@ import (
 	. "goDisruptor/internal"
 )
 
-/*
-** use reference so no mallocgc will be called, consumer should not modify the data
- */
 type Consumer[E any] func(event *E)
 
 type Producer[E any] func(pooled *E, updated E)
