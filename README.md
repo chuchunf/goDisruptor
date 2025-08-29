@@ -3,9 +3,9 @@
 Another LMAX disruptor port in go 1.8 with generics support.
 
 ## Description
-LMAX disruptor is a High Performance Inter-Thread Messaging Library as an alternative to bounded queueu, which makes use of padding to avoid memory false sharing, alignment of memory in stripe to be cache friendly etc. 
+LMAX disruptor is a High Performance Inter-Thread Messaging Library as an alternative to bounded queue, which makes use of padding to avoid memory false sharing, alignment of memory in stripe to be cache friendly etc. 
 
-This is a port in Go with generics support, NOTE, Go's approach to concurrency is "**Don't communicate by sharing memory; share memory by communicating**". Channel is the prefered method for concurrency. This port follows disruptor's approach for better performance.
+This is a port in Go with generics support, NOTE, Go's approach to concurrency is "**Don't communicate by sharing memory; share memory by communicating**". Channel is the preferred method for concurrency. This port follows disruptor's approach for better performance.
 
 ## Getting started
 
@@ -30,12 +30,6 @@ running all performance testing benchmarks
 ### Usage
 Please refer to [example](example) 
 
-## Plan
-- [ ] Sequence 
-- [ ] Waiting Strategy
-- [ ] Sequence Barrier
-- [ ] Sequencer
-- [ ] RingBuffer
 
 ## License
 Distributed under the MIT License. See [LICENSE.txt](LICENSE.txt) for more information.
