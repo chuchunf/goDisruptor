@@ -10,4 +10,7 @@ Following waiting strategies are implemented and tested
 Obviously, the BusySpin strategy is the best performance implementation which has the best through put at a cost of wasting CPU cycle.
 The results are recorded here nevertheless.
 
+empty statement 0.2011 ns/op
 busysping 0.4013 ns/op
+yield 0.6090 ns/op
+sleep wait 0.6250 ns/op => why no sleep 1 nano second ?

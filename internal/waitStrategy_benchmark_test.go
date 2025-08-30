@@ -43,6 +43,15 @@ func BenchmarkYieldWait(b *testing.B) {
 	}
 }
 
+func BenchmarkSleepWait(b *testing.B) {
+	seq := NewSequence()
+	seq.Set(100)
+	strategy := SleepWaitStrategy{}
+	for i := 0; i < b.N; i++ {
+		strategy.waitFor(99, &seq)
+	}
+}
+
 func TestBusySpin(t *testing.T) {
 	seq := NewSequence()
 	seq.Set(100)
