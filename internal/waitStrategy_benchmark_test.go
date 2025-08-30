@@ -7,6 +7,31 @@ import (
 	"time"
 )
 
+func Benchmark1BusySpin(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
+	for i := 0; i < b.N; i++ {
+		if true {
+		}
+	}
+}
+
+func Benchmark1Reshedule(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
+	for i := 0; i < b.N; i++ {
+		runtime.Gosched()
+	}
+}
+
+func BenchmarkSleep1NanoSecond(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
+	for i := 0; i < b.N; i++ {
+		time.Sleep(100 * time.Nanosecond)
+	}
+}
+
 func BenchmarkBusySpin(b *testing.B) {
 	runtime.SetCPUProfileRate(10000)
 
