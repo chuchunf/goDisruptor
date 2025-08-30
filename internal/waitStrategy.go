@@ -6,7 +6,6 @@ import (
 )
 
 // WaitStrategy How consumers should wait for the next sequence to be available
-// by producer
 type WaitStrategy interface {
 	waitFor(next int64, seq *Sequence) int64
 }
