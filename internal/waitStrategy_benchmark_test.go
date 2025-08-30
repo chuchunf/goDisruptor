@@ -8,6 +8,8 @@ import (
 )
 
 func BenchmarkBusySpin(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 	strategy := BusySpinWaitStrategy{}
@@ -17,6 +19,8 @@ func BenchmarkBusySpin(b *testing.B) {
 }
 
 func BenchmarkBusySpin2(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	for i := 0; i < b.N; i++ {
 	}
 }
@@ -24,6 +28,7 @@ func BenchmarkBusySpin2(b *testing.B) {
 // from cpuprofile, the none GC version has simpler call graph and in general fast
 // no GC version should be used for performance tuning
 func BenchmarkBusySpinWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence()
@@ -35,6 +40,8 @@ func BenchmarkBusySpinWithoutGC(b *testing.B) {
 }
 
 func BenchmarkYieldWait(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 	strategy := YieldWaitStrategy{}
@@ -44,6 +51,8 @@ func BenchmarkYieldWait(b *testing.B) {
 }
 
 func BenchmarkSleepWait(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 	strategy := SleepWaitStrategy{}
@@ -53,6 +62,8 @@ func BenchmarkSleepWait(b *testing.B) {
 }
 
 func TestBusySpin(t *testing.T) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 
@@ -70,6 +81,8 @@ func TestBusySpin(t *testing.T) {
 }
 
 func TestSleep(t *testing.T) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 
@@ -87,6 +100,8 @@ func TestSleep(t *testing.T) {
 }
 
 func TestYield(t *testing.T) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 
