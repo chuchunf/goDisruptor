@@ -1,10 +1,13 @@
 package pkg
 
 import (
+	"runtime"
 	"testing"
 )
 
 func BenchmarkNextN(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seqcer := NewSequencer(1024)
 	seqcer.publish(10)
 
@@ -20,6 +23,8 @@ func BenchmarkNextN(b *testing.B) {
 }
 
 func BenchmarkMinSeq(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq1 := NewSequence()
 	seq2 := NewSequence()
 	seq1.Set(10)
