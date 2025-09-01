@@ -161,8 +161,6 @@ Both Yield wait and Sleep wait cost around 43 nanosecond which is much larger.
 
 $-$
 
-## SequenceBarrier
-
 
 ## Sequencer
 

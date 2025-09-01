@@ -1,11 +1,14 @@
 package pkg
 
 import (
+	"runtime"
 	"runtime/debug"
 	"testing"
 )
 
 func BenchmarkWaitFor(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
+
 	seq := NewSequence()
 	seq.Set(100)
 	wait := BusySpinWaitStrategy{}
@@ -17,6 +20,7 @@ func BenchmarkWaitFor(b *testing.B) {
 }
 
 func BenchmarkWaitForWithoutGC(b *testing.B) {
+	runtime.SetCPUProfileRate(10000)
 	debug.SetGCPercent(-1)
 
 	seq := NewSequence()
