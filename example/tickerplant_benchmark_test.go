@@ -48,10 +48,6 @@ func BenchmarkTickerPlant(b *testing.B) {
 	wg.Wait()
 }
 
-/*
-** performance is worse with pinned CPU .. :( ..
-** from call graphy, this pincpu version should be faster ...
- */
 func BenchmarkTickerPlantPinCPU(b *testing.B) {
 	debug.SetGCPercent(-1)
 
