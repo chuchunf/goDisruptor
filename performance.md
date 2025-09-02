@@ -196,3 +196,4 @@ $-$
 TODO: pin CPU for the ring buffer 
 TODO: add some diagram/call graph etc ?
 TODO: re-organize this MD 
+TODO: add TLDR for both readme.md and performance.md
