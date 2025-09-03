@@ -103,3 +103,74 @@ func BenchmarkTickerPlantPinCPU(b *testing.B) {
 
 	wg.Wait()
 }
+
+func BenchmarkTickerPlantPinCPUForceSwitch(b *testing.B) {
+	debug.SetGCPercent(-1)
+
+	if runtime.NumCPU() < 8 {
+		panic("need 8 CPU cores for benchmark !")
+	}
+	var cpuset1, cpuset2, cpuset3 = unix.CPUSet{}, unix.CPUSet{}, unix.CPUSet{}
+	cpuset1.Set(1)
+	cpuset2.Set(2)
+	cpuset3.Set(3)
+	var cpuset4, cpuset5, cpuset6 = unix.CPUSet{}, unix.CPUSet{}, unix.CPUSet{}
+	cpuset1.Set(4)
+	cpuset2.Set(5)
+	cpuset3.Set(6)
+
+	producer, logger, processer := TickerPlant()
+	iterations := int(b.N)
+
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	ticker := TickData{seq: 0}
+
+	func switchCPU(bool changeCPU, )
+
+	go func() {
+		var changeCpu = true
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset1)
+		defer runtime.UnlockOSThread()
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			if i%100_000 == 0 {
+				if changeCpu {
+					unix.SchedSetaffinity(0, &cpuset1)
+				} else {
+					unix.SchedSetaffinity(0, &cpuset4)
+				}
+				changeCpu = !changeCpu
+			}
+			ticker.seq = int32(i)
+			producer(ticker)
+		}
+	}()
+
+	go func() {
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset2)
+		defer runtime.UnlockOSThread()
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			logger()
+		}
+	}()
+
+	go func() {
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset3)
+		defer runtime.UnlockOSThread()
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			processer()
+		}
+	}()
+
+	wg.Wait()
+}
