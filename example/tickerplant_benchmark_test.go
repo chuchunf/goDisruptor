@@ -60,7 +60,7 @@ func BenchmarkTickerPlantPinCPU(b *testing.B) {
 	cpuset3.Set(3)
 
 	producer, logger, processer := TickerPlant()
-	iterations := int(b.N)
+	iterations := b.N
 
 	wg := sync.WaitGroup{}
 	wg.Add(3)
@@ -131,7 +131,7 @@ func BenchmarkTickerPlantPinCPUForceSwitch(b *testing.B) {
 	cpuset3.Set(6)
 
 	producer, logger, processer := TickerPlant()
-	iterations := int(b.N)
+	iterations := b.N
 
 	wg := sync.WaitGroup{}
 	wg.Add(3)
@@ -142,7 +142,7 @@ func BenchmarkTickerPlantPinCPUForceSwitch(b *testing.B) {
 	ticker := TickData{seq: 0}
 
 	go func() {
-		var changeCpu = true
+		changeCpu := true
 		runtime.LockOSThread()
 		unix.SchedSetaffinity(0, &cpuset1)
 		defer runtime.UnlockOSThread()
@@ -157,7 +157,7 @@ func BenchmarkTickerPlantPinCPUForceSwitch(b *testing.B) {
 	}()
 
 	go func() {
-		var changeCpu = true
+		changeCpu := true
 		runtime.LockOSThread()
 		unix.SchedSetaffinity(0, &cpuset2)
 		defer runtime.UnlockOSThread()
@@ -171,7 +171,7 @@ func BenchmarkTickerPlantPinCPUForceSwitch(b *testing.B) {
 	}()
 
 	go func() {
-		var changeCpu = true
+		changeCpu := true
 		runtime.LockOSThread()
 		unix.SchedSetaffinity(0, &cpuset3)
 		defer runtime.UnlockOSThread()
