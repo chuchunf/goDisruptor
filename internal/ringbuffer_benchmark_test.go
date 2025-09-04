@@ -1,8 +1,11 @@
 package pkg
 
 import (
+	"runtime"
 	"sync"
 	"testing"
+
+	unix "golang.org/x/sys/unix"
 )
 
 func BenchmarkGet(b *testing.B) {
@@ -63,6 +66,67 @@ func BenchmarkRingBuffer(b *testing.B) {
 		}
 	}
 	writer := func() {
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			ring.Get(int64(i))
+			ring.Publish(int64(i))
+		}
+	}
+
+	go reader1()
+	go reader2()
+	go writer()
+
+	wg.Wait()
+}
+
+func BenchmarkRingBufferPinCPU(b *testing.B) {
+	if runtime.NumCPU() < 4 {
+		panic("need 4 CPU cores for benchmark !")
+	}
+	var cpuset1, cpuset2, cpuset3 = unix.CPUSet{}, unix.CPUSet{}, unix.CPUSet{}
+	cpuset1.Set(1)
+	cpuset2.Set(2)
+	cpuset3.Set(3)
+
+	iterations := b.N
+	seqcer := NewSequencer(1024)
+
+	seq1 := NewSequence()
+	seq2 := NewSequence()
+
+	seqcer.addGatingSequences(&seq1)
+	seqcer.addGatingSequences(&seq2)
+
+	ring, _ := NewRingBuffer[int64](1024, seqcer)
+
+	wg := sync.WaitGroup{}
+	wg.Add(3)
+
+	reader1 := func() {
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset1)
+		defer runtime.UnlockOSThread()
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			ring.Get(int64(i))
+			seq1.Set(int64(i))
+		}
+	}
+	reader2 := func() {
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset2)
+		defer runtime.UnlockOSThread()
+		defer wg.Done()
+		for i := 0; i < iterations; i++ {
+			ring.Get(int64(i))
+			seq2.Set(int64(i))
+		}
+	}
+	writer := func() {
+		runtime.LockOSThread()
+		unix.SchedSetaffinity(0, &cpuset3)
+		defer runtime.UnlockOSThread()
 		defer wg.Done()
 		for i := 0; i < iterations; i++ {
 			ring.Get(int64(i))
