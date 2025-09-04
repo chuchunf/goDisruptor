@@ -186,6 +186,11 @@ $-$
 
 ## RingBuffer
 
+|Scenario| ns/op | code|
+|--|--|--|
+|Normal case|  15.80 ns/op ||
+|Pinned CPU||
+|Force swtich CPU||
 
 
 $-$
@@ -193,7 +198,6 @@ $-$
 # Conclusion 
 
 
-TODO: pin CPU for the ring buffer 
-TODO: add some diagram/call graph etc ?
-TODO: re-organize this MD 
+TODO: re-organize this MD
 TODO: add TLDR for both readme.md and performance.md
+TODO: add some diagram/call graph etc ?
