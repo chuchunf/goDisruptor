@@ -40,7 +40,6 @@ func (ring *RingBuffer[E]) Next() int64 {
 	return next
 }
 
-// TODO: performance testng for remainder operation with mask
 func (ring *RingBuffer[E]) Get(index int64) *E {
 	return &ring.entries[index&ring.indexMask]
 }
