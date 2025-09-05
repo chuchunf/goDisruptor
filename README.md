@@ -1,6 +1,8 @@
 # goDisruptor ![main status](https://github.com/chuchunf/goDisruptor/actions/workflows/go.yml/badge.svg) [![codecov](https://codecov.io/gh/chuchunf/goDisruptor/branch/main/graph/badge.svg?token=XlzJA6ixJx)](https://codecov.io/gh/chuchunf/goDisruptor)
 
-Another LMAX disruptor port in go 1.8 with generics support.
+Another LMAX disruptor port in go 1.25 with generics support.
+
+TLDR: for benchmarking, performance analysis and conclusion, refer to [performance.md](performance.md)
 
 ## Description
 LMAX disruptor is a High Performance Inter-Thread Messaging Library as an alternative to bounded queue, which makes use of padding to avoid memory false sharing, alignment of memory in stripe to be cache friendly etc. 
@@ -10,8 +12,8 @@ This is a port in Go with generics support, NOTE, Go's approach to concurrency i
 ## Getting started
 
 ### Prerequisites
-1. install latest go lang binary (1.18.3 and above) 
-2. install latest vs code
+1. install latest go lang binary (1.25 and above) 
+2. setup the project in IDE
  
 ### Running Testing
 running all unit testing cases
