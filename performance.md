@@ -8,6 +8,8 @@ As Go provides powerful built-in primitives like channels and goroutines.
 
 This document focuses on the performance analysis of this Go port of the LMAX Disruptor. 
 
+**TLDR: [Conclusion](performance.md#conclusion)**
+
 $-$
 
 # Design of LMAX-Disruptor
@@ -217,5 +219,4 @@ $-$
 
 
 TODO: re-organize this MD
-TODO: add TLDR for both readme.md and performance.md
 TODO: add some diagram/call graph etc ?
