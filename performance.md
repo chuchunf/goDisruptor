@@ -143,11 +143,11 @@ The results are recorded here nevertheless.
 |Sleep wait     |0.4250 ns/op|
 
 #### Actual timing for each implementation
-| Implementation | ns/op|
-|----------------|--|
-|Busy Spin |0.2098 ns/op|
-|Yield |43.79 ns/op|
-|Sleep for 1 nano second |43.84 ns/op|
+| Implementation | ns/op| code                                                        |
+|----------------|--|-------------------------------------------------------------|
+|Busy Spin |0.2098 ns/op| [TestBusySpin](waitStrategy_benchmark_test.go#L89C6-L89C18) |
+|Yield |43.79 ns/op| [TestYield](waitStrategy_benchmark_test.go#L127)            |
+|Sleep for 1 nano second |43.84 ns/op| [TestSleep](waitStrategy_benchmark_test.go#L108)|
 
 $-$
 
@@ -171,10 +171,10 @@ $-$
 ### Benchmark results
 Sequencer can claim 1 slot or many slots in a batch mode,
 
-|Implementation| ns/op | 
-|--|--|
-|next() => claim 1 slot| 31.97 ns/op|
-|nextN() => claim n slots| 3.109 ns/op|
+|Implementation| ns/op | code                                       |
+|--|--|--------------------------------------------|
+|next() => claim 1 slot| 31.97 ns/op| [10Next](sequencer_benchmark_test.go#L39)  |
+|nextN() => claim n slots| 3.109 ns/op| [Next10](/sequencer_benchmark_test.go#L58) |
 
 $-$
 
@@ -186,11 +186,11 @@ $-$
 
 ## RingBuffer
 
-|Scenario| ns/op | code|
-|--|--|--|
-|Normal case|  15.80 ns/op ||
-|Pinned CPU||
-|Force swtich CPU||
+|Scenario| ns/op                                          | code                                                |
+|--|------------------------------------------------|-----------------------------------------------------|
+|Normal case| 15.80 ns/op  | [NormalDoNothing](ringbuffer_benchmark_test.go#L39) |
+|Pinned CPU| | [PinCPU](ringbuffer_benchmark_test.go#L83)          |
+|Force swtich CPU| | [SwitchCUP](ringbuffer_benchmark_test.go#L155)      |
 
 
 $-$
