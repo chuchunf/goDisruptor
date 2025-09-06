@@ -185,13 +185,25 @@ The batch mode  has a clear performance gain that the batch operation is cache f
 $-$
 
 ## RingBuffer
+The actual ring buffer implementation.
 
-|Scenario| ns/op                                          | code                                                |
-|--|------------------------------------------------|-----------------------------------------------------|
+### Benchmark results
+The following benchmark is conducted in a Linux environment.
+
+|Scenario| ns/op        | code                                                |
+|--|--------------|-----------------------------------------------------|
 |Normal case| 15.80 ns/op  | [NormalDoNothing](ringbuffer_benchmark_test.go#L39) |
-|Pinned CPU| | [PinCPU](ringbuffer_benchmark_test.go#L83)          |
-|Force swtich CPU| | [SwitchCUP](ringbuffer_benchmark_test.go#L155)      |
+|Pinned CPU| 16.10 ns/op  | [PinCPU](ringbuffer_benchmark_test.go#L83)          |
+|Force swtich CPU| 230.12 ns/op | [SwitchCUP](ringbuffer_benchmark_test.go#L155)      |
 
+$-$
+
+### Analysis
+The Normal case (without any handling on CPU) has similar result as case with pinned CPU, which is probably due to 
+that there is no CPU switch happening regardless.
+
+However the force switch case is much slower and indicates that switching CPU and invalidating the entire cache line has a 
+significant impact on the throughput. 
 
 $-$
 
