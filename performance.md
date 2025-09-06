@@ -208,6 +208,12 @@ significant impact on the throughput.
 $-$
 
 # Conclusion 
+1. Impact of false sharing due to size of cache line is significant, avoid false sharing by padding.
+2. Impact of GC, malloc and struct is negligible with ring buffer data structure by reuse objects.
+3. Busy spin improves throughput significantly at a cost of wasting CPU cycles.
+4. A proper selected batch size improves throughput.
+5. Pin thread/process to CPU if possible to avoid cache pollution. 
+
 
 
 TODO: re-organize this MD
