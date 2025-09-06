@@ -1,14 +1,17 @@
 
 # Introduction
-The LMAX Disruptor is a high-performance inter-thread messaging library developed in Java, renowned for its exceptionally low latency  
-by using lock-free algorithms, careful memory layout and other consideration at hardware level to minimize contention and improve the throughput.
 
-The objective of the port is to learn to implement, test and verify low latency library in general, as golang prefers goroutine.
-As Go provides powerful built-in primitives like channels and goroutines.
+The LMAX Disruptor is a high-performance inter-thread messaging library originally developed in Java. 
+It achieves exceptionally low latency and high throughput through a combination of lock-free algorithms, careful memory layout, 
+and hardware-conscious design to minimize contention.
 
-This document focuses on the performance analysis of this Go port of the LMAX Disruptor. 
+This project ports the core concepts of the Disruptor to Go. 
+While Go provides powerful built-in concurrency primitives like channels and goroutines, 
+the objective is to explore the implementation of a low-latency, ring-buffer-based structure that can serve specific high-performance.
 
-**TLDR: [Conclusion](performance.md#conclusion)**
+This document presents a performance analysis of this Go port, examining the impact of various low-level design decisions on overall throughput and latency.
+
+**TL;DR: [Conclusion](performance.md#conclusion)**
 
 $-$
 
@@ -216,7 +219,3 @@ $-$
 4. A proper selected batch size improves throughput.
 5. Pin thread/process to CPU if possible to avoid cache pollution. 
 
-
-
-TODO: re-organize this MD
-TODO: add some diagram/call graph etc ?
